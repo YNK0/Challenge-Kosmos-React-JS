@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Moveable from "react-moveable";
+import "./app.css";
 
 const App = () => {
   const [moveableComponents, setMoveableComponents] = useState([]);
@@ -15,7 +16,6 @@ const App = () => {
   }, []);
 
   const addMoveable = () => {
-    // Create a new moveable component and add it to the array
     const COLORS = ["red", "blue", "yellow", "green", "purple"];
 
     setMoveableComponents([
@@ -43,46 +43,38 @@ const App = () => {
       }
       return moveable;
     });
-    
     setMoveableComponents(updatedMoveables);
   };
 
-  const handleResizeStart = (index, e) => {
-  
-    // Check if the resize is coming from the left handle
-    const [handlePosX, handlePosY] = e.direction;
-    // 0 => center
-    // -1 => top or left
-    // 1 => bottom or right
 
-    // -1, -1
-    // -1, 0
-    // -1, 1
+
+  const handleResizeStart = (index, e) => {
+      const [handlePosX, handlePosY] = e.direction;
     if (handlePosX === -1) {
-      
-      
-      // Save the initial left and width values of the moveable component
       const initialLeft = e.left;
       const initialWidth = e.width;
-
-      // Set up the onResize event handler to update the left value based on the change in width
     }
   };
-  
-  const showSelected = (item) => {
-    const idNow = item.id;
-    console.log(idNow+" id puto")
+
+  const sizeOfMoveables = () => {
+    console.log(moveableComponents.length);
+    return moveableComponents.length<0;
   };
 
   //Codigo pendiendo aui
 
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
+  const deleteMoveable = (id) => {
+    const updatedMoveables = moveableComponents.filter((moveable) => moveable.id !== selected);
+    setMoveableComponents(updatedMoveables);
+
+  };
   
   return (
     <main style={{ height: "100vh", width: "100vw" }}>
-      <button onClick={addMoveable}>Add Moveable1</button>
+      <div className="container-btns">
+      <button onClick={addMoveable} className="button-4">Add Moveable1</button>
+      <button onClick={deleteMoveable} className={selected == null ? "ocult": "" + moveableComponents.length==0 ? "ocult" : "" + "button-4"}>Remove Moveable</button>
+      </div>
       <div 
         id="parent"
         style={{
