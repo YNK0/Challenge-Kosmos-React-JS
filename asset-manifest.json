@@ -1,10 +1,13 @@
 {
   "files": {
-    "main.js": "/Challenge-Kosmos-React-JS/static/js/main.17b8e1f3.js",
+    "main.css": "/Challenge-Kosmos-React-JS/static/css/main.084187ae.css",
+    "main.js": "/Challenge-Kosmos-React-JS/static/js/main.6e91da7a.js",
     "index.html": "/Challenge-Kosmos-React-JS/index.html",
-    "main.17b8e1f3.js.map": "/Challenge-Kosmos-React-JS/static/js/main.17b8e1f3.js.map"
+    "main.084187ae.css.map": "/Challenge-Kosmos-React-JS/static/css/main.084187ae.css.map",
+    "main.6e91da7a.js.map": "/Challenge-Kosmos-React-JS/static/js/main.6e91da7a.js.map"
   },
   "entrypoints": [
-    "static/js/main.17b8e1f3.js"
+    "static/css/main.084187ae.css",
+    "static/js/main.6e91da7a.js"
   ]
 }
