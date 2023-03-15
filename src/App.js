@@ -29,23 +29,26 @@ const App = () => {
         height: 100,
         color: COLORS[Math.floor(Math.random() * COLORS.length)],
         updateEnd: true,
-        backgroundImage: bgImg,
+        backgroundImage: "url(https://via.placeholder.com/600/77179)",
       },
     ]);
   };
 
-  const updateMoveable = (id, newComponent, updateEnd = false) => {
-    const updatedMoveables = moveableComponents.map((moveable, i) => {
+  
+
+  const updateMoveable = (id, newComponent, updateEnd = true) => {
+    const updatedMoveables = moveableComponents.map((moveable) => {
       if (moveable.id === id) {
         return { id, ...newComponent, updateEnd };
       }
       return moveable;
     });
+    
     setMoveableComponents(updatedMoveables);
   };
 
   const handleResizeStart = (index, e) => {
-    console.log("e", e.direction);
+  
     // Check if the resize is coming from the left handle
     const [handlePosX, handlePosY] = e.direction;
     // 0 => center
@@ -65,9 +68,18 @@ const App = () => {
       // Set up the onResize event handler to update the left value based on the change in width
     }
   };
-
   
+  const showSelected = (item) => {
+    const idNow = item.id;
+    console.log(idNow+" id puto")
+  };
 
+  //Codigo pendiendo aui
+
+  useEffect(() => {
+    console.log(selected);
+  }, [selected]);
+  
   return (
     <main style={{ height: "100vh", width: "100vw" }}>
       <button onClick={addMoveable}>Add Moveable1</button>
@@ -80,14 +92,15 @@ const App = () => {
           width: "80vw",
         }}
       >
-        {moveableComponents.map((item, index) => (
+        {moveableComponents.map((item, index) => (          
           <Component
             {...item}
             key={index}
             updateMoveable={updateMoveable}
             handleResizeStart={handleResizeStart}
-            setSelected={setSelected}
-            isSelected={selected === item.id}
+            setSelected={setSelected }
+            isSelected={selected === item.id  }
+            
           />
         ))}
       </div>
@@ -101,6 +114,8 @@ const Component = ({
   updateMoveable,
   top,
   left,
+  button,
+  right,
   width,
   height,
   index,
@@ -118,6 +133,8 @@ const Component = ({
   const [nodoReferencia, setNodoReferencia] = useState({
     top: top,
     left: left,
+    button: button,
+    right: right,
     width,
     height,
     index,
@@ -257,8 +274,11 @@ const Component = ({
     });
   };
 
+  const handleContextMenu = (event, id) => {
+    event.preventDefault(); 
 
-
+  };
+  
   return (
     <>
       <div
@@ -271,9 +291,10 @@ const Component = ({
           left: left,
           width: width,
           height: height,   
-          background: color,
+          backgroundColor: color,
         }}
         onClick={() => setSelected(id)}
+        onContextMenu={handleContextMenu}
 
       >
       </div>
@@ -283,12 +304,27 @@ const Component = ({
         resizable
         draggable
         onDrag={(e) => {
+          if(e.top < 0){
+            e.top=0;
+          }
+          if(e.left < 0){
+            e.left=0;
+          }
+          if(e.bottom < 0){
+            e.top=parentRef.current.offsetHeight-height;
+          }
+          if(e.right <= 0){
+            e.left=parentRef.current.offsetWidth-width;
+          }
           updateMoveable(id, {
             top: e.top,
             left: e.left,
+            button: e.bottom,
+            right: e.right,
             width,
             height,
             color,
+            backgroundImage,
           });
         }}
         
@@ -301,6 +337,7 @@ const Component = ({
         zoom={1}
         origin={false}
         padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
+        onContextMenu={handleContextMenu}
       />
     </>
   );
