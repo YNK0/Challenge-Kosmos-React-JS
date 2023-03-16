@@ -2,30 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import Moveable from "react-moveable";
 import "./app.css";
 
-var imgList = {}
-
-async function fetchImage() {
-  const response = await fetch("https://jsonplaceholder.typicode.com/photos");
-  const data = await response.json();
-  imgList = data;
-  //setImage(data[Math.floor(Math.random() * data.length)].url);
-  console.log(data);
-  //(data[Math.floor(Math.random() * data.length)].url)
-}
-fetchImage();
-
-
 const App = () => {
+
   const [moveableComponents, setMoveableComponents] = useState([]);
   const [selected, setSelected] = useState(null);
-  useEffect(() => {
-    async function fetchImage() {
-      const response = await fetch("https://jsonplaceholder.typicode.com/photos");
-      const data = await response.json();
-      //setBgImg(data[Math.floor(Math.random() * data.length)].url);
-    }
-    fetchImage();
-  }, []);
 
   const addMoveable = () => {
     const COLORS = ["red", "blue", "yellow", "green", "purple"];
@@ -34,7 +14,7 @@ const App = () => {
       ...moveableComponents,
       {
         
-        id: Math.floor(Math.random() * Date.now()),
+        id: Math.floor(Math.random() * 100),
         top: 0,
         left: 0,
         width: 100,
@@ -284,7 +264,19 @@ const Component = ({
 
   //console.log(imgList[Math.floor(Math.random() * id)].url)
   //console.log(Math.floor(0.00000000001 * id))
-  
+
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+      fetch('https://jsonplaceholder.typicode.com/photos')
+        .then(response => response.json())
+        .then(data => setData(data));
+  }, []);
+
+  function getImg (id) {
+    if(data==null) return null;
+    return data[id].url
+  }
   return (
     <>
       <div
@@ -296,10 +288,9 @@ const Component = ({
           top: top,
           left: left,
           width: width,
-          height: height, 
-          backgroundColor: color,  
+          height: height,  
           backgroundSize: width+"px" + " " + height+"px",
-          //backgroundImage: `url(${imgList[Math.floor(0.1 * id)].url})`,
+          backgroundImage: `url(${getImg(id)}})`,
         }}
         onClick={() => setSelected(id)}
         onContextMenu={handleContextMenu}
