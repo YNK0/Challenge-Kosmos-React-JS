@@ -207,7 +207,8 @@ const Component = ({
   const onResizeEnd = async (e) => {
     let newWidth = e.lastEvent?.width;
     let newHeight = e.lastEvent?.height;
-  
+
+    
     const positionMaxTop = top + newHeight;
     const positionMaxLeft = left + newWidth;
   
@@ -220,27 +221,12 @@ const Component = ({
       newHeight = (newWidth / width) * height;
     }
   
-    const { lastEvent } = e;
-    const { drag } = lastEvent;
-    const { beforeTranslate } = drag;
-  
-    const absoluteTop = top + beforeTranslate[1];
-    const absoluteLeft = left + beforeTranslate[0];
-  
-    if (absoluteTop < 0) {
-      newHeight = newHeight + absoluteTop;
-      absoluteTop = 0;
-    }
-    if (absoluteLeft < 0) {
-      newWidth = newWidth + absoluteLeft;
-      absoluteLeft = 0;
-    }
-  
+    
     updateMoveable(
       id,
       {
-        top: absoluteTop,
-        left: absoluteLeft,
+        top: 0,
+        left: 0,
         width: newWidth,
         height: newHeight,
         color,
@@ -252,8 +238,8 @@ const Component = ({
   
     setNodoReferencia({
       ...nodoReferencia,
-      top: absoluteTop,
-      left: absoluteLeft,
+      top: 0,
+      left: 0,
     });
   };
 
@@ -328,7 +314,9 @@ const Component = ({
         }}
         
         onResize={onResize}
-        onResizeEnd={onResizeEnd}
+        onResizeEnd={(e) => {
+          onResizeEnd(e);
+        }}
         keepRatio={false}
         throttleResize={1}
         renderDirections={["nw", "n", "ne", "w", "e", "sw", "s", "se"]}
